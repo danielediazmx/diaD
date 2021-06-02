@@ -1,0 +1,82 @@
+{% extends 'layouts/main.html' %}
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Registros</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Registros</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row card">
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Nombre Completo</th>
+                            <th>Teléfono</th>
+                            <th>Coordinación</th>
+                            <th>Ya votó?</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for registro in registros %}
+                            <tr>
+                                <td>{{ registro.nombre }} {{ registro.apellido_paterno }} {{ registro.apellido_materno }}</td>
+                                <td>{{ registro.celular }}</td>
+                                <td>{{ registro.coordinacion }}</td>
+                                <td>No</td>
+                                <td>...</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% if registros.has_other_pages %}
+                        <div class="card-footer clearfix">
+                            <ul class="pagination pagination-sm m-0 float-right">
+                                {% if registros.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ registros.previous_page_number }}">
+                                            &laquo;
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-link disabled"><span>&laquo;</span></li>
+                                {% endif %}
+                                {% for pg in page_range %}
+                                    {% if blogs.number == pg %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ pg }}"
+                                                                 class="btn btn-default">{{ pg }}</a></li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ pg }}"
+                                                                 class="btn">{{ pg }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if registros.has_next %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="?page={{ registros.next_page_number }}">&raquo;</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled"><span>&raquo;</span></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  diad_mysql:
+    image: mariadb/server
+    container_name: diad_mysql
+    command: --default-authentication-plugin=mysql_native_password
+#        working_dir: /application
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=diad
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:3306"
+  diad_web:
+    build:
+      context: ./dockerize
+      dockerfile: Dockerfile
+    command:
+      - ./dockerize/wait-for-it.sh
+      - diad_mysql:3306
+      - --
+      - ./dockerize/execute.sh
+    container_name: diad_web
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - diad_mysql
+    links:
+      - diad_mysql
