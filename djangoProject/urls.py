@@ -22,7 +22,7 @@ from dashboard.views import index, users_list, dashboard_two
 from excel_importer.views import ExcelImporter
 
 urlpatterns = [
-    path('', login_required(index)),
+    path('', login_required(dashboard_two)),
     path('dashboard-two/', login_required(dashboard_two)),
     path('users-list/', users_list),
     path('accounts/', include('django.contrib.auth.urls')),

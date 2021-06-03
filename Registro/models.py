@@ -13,3 +13,11 @@ class Registro(models.Model):
     invitado_por = models.CharField(max_length=200)
 
     ya_voto = models.BooleanField(default=False)
+
+    def calcularMisInvitados(self):
+        mis_invitados = Registro.objects.filter(
+            invitado_por=self.nombre + " " + self.apellido_paterno + " " + self.apellido_materno)
+        return mis_invitados.count()
+
+    def tengoInvitados(self):
+        return bool(self.calcularMisInvitados())

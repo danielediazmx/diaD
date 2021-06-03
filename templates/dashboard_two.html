@@ -20,22 +20,24 @@
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
             <div class="row">
-                <div class="col-12">
-                    <form action="" method="get" id="form_coord">
-                        <label for="coordinacion">Coordinación</label>
-                        <select name="coordinacion" id="coordinacion" class="form-control"
-                                onchange="document.getElementById('form_coord').submit()">
-                            <option value="">Ninguna</option>
-                            {% for coordinacion in coordinaciones %}
-                                {% if coordinacion.coordinacion != "" %}
-                                    <option value="{{ coordinacion.coordinacion }}"
-                                            {% if coordinacionSelected == coordinacion.coordinacion %}selected{% endif %}>{{ coordinacion.coordinacion }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                        <hr>
-                    </form>
-                </div>
+                {% if request.user.is_superuser %}
+                    <div class="col-12">
+                        <form action="" method="get" id="form_coord">
+                            <label for="coordinacion">Coordinación</label>
+                            <select name="coordinacion" id="coordinacion" class="form-control"
+                                    onchange="document.getElementById('form_coord').submit()">
+                                <option value="">Ninguna</option>
+                                {% for coordinacion in coordinaciones %}
+                                    {% if coordinacion.coordinacion != "" %}
+                                        <option value="{{ coordinacion.coordinacion }}"
+                                                {% if coordinacionSelected == coordinacion.coordinacion %}selected{% endif %}>{{ coordinacion.coordinacion }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <hr>
+                        </form>
+                    </div>
+                {% endif %}
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
                     <div class="small-box bg-info">

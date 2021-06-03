@@ -3,7 +3,7 @@ import random
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Sum
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -16,7 +16,7 @@ class RegistrosView(View):
 
         registros_list = Registro.objects.filter(invitado_por=user.first_name).all()
         page = request.GET.get('page', 1)
-        paginator = Paginator(registros_list, 10)
+        paginator = Paginator(registros_list, 25)
 
         try:
             registros = paginator.page(page)
@@ -41,12 +41,11 @@ class RegistroMarcarVotoView(View):
             registro.ya_voto = ya_voto
             registro.save()
 
-        return redirect('registros')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/registros'))
 
 
 def registro_create_users(request):
     registros = Registro.objects.all()
-    invitado_por = {}
 
     def generateUsername(registro):
         username = str(str(registro.invitado_por).lower().split(" ")[0]) + str(random.randint(1000, 10000))
