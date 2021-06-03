@@ -26,8 +26,7 @@
                     <input name="nombre" id="nombre" class="form-control" value="{{ nombre_filter }}"/>
                     {% if request.user.is_superuser %}
                         <label for="coordinacion">Coordinación</label>
-                        <select name="coordinacion" id="coordinacion" class="form-control"
-                                onchange="document.getElementById('form_coord').submit()">
+                        <select name="coordinacion" id="coordinacion" class="form-control">
                             <option value="">Ninguna</option>
                             {% for coordinacion in coordinaciones %}
                                 {% if coordinacion.coordinacion != "" %}
