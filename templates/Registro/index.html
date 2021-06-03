@@ -24,6 +24,19 @@
                 <form action="" method="get" id="form_coord">
                     <label for="nombre">Nombre</label>
                     <input name="nombre" id="nombre" class="form-control" value="{{ nombre_filter }}"/>
+                    {% if request.user.is_superuser %}
+                        <label for="coordinacion">Coordinación</label>
+                        <select name="coordinacion" id="coordinacion" class="form-control"
+                                onchange="document.getElementById('form_coord').submit()">
+                            <option value="">Ninguna</option>
+                            {% for coordinacion in coordinaciones %}
+                                {% if coordinacion.coordinacion != "" %}
+                                    <option value="{{ coordinacion.coordinacion }}"
+                                            {% if coordinacionSelected == coordinacion.coordinacion %}selected{% endif %}>{{ coordinacion.coordinacion }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    {% endif %}
                     <br>
                     <button class="btn btn-success btn-sm" type="submit">Buscar</button>
                     <hr>

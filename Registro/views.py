@@ -20,10 +20,14 @@ class RegistrosView(View):
             registros_list = Registro.objects
 
         nombre_filter = request.GET.get('nombre', '')
+        coordinacion_selected = request.GET.get('coordinacion', '')
         if nombre_filter:
             registros_list = registros_list.filter(
                 Q(nombre__contains=nombre_filter.upper()) | Q(apellido_paterno=nombre_filter.upper()) | Q(
                     apellido_paterno=nombre_filter.upper()))
+
+        if coordinacion_selected:
+            registros_list = registros_list.filter(coordinacion=coordinacion_selected)
 
         page = request.GET.get('page', 1)
         paginator = Paginator(registros_list.all(), 25)
@@ -41,8 +45,13 @@ class RegistrosView(View):
         end_index = index + 10 if index <= max_index - 10 else max_index
         page_range = list(paginator.page_range)[start_index:end_index]
 
+        coordinaciones = Registro.objects.values("coordinacion").annotate(coordinacion_count=Sum("coordinacion"))
+
         return render(request, 'Registro/index.html',
-                      {'registros': registros, 'page_range': page_range, 'nombre_filter': nombre_filter})
+                      {'registros': registros, 'page_range': page_range,
+                       'nombre_filter': nombre_filter, 'coordinaciones': coordinaciones,
+                       'coordinacionSelected': coordinacion_selected
+                       })
 
 
 class RegistroMarcarVotoView(View):
