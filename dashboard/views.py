@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 
 # Create your views here.
@@ -13,3 +14,8 @@ def index(request):
     return render(request, 'dashboard.html',
                   {'total_registros': total_registros, 'ya_votaron': ya_votaron,
                    'no_han_votado': no_han_votado, 'eficiencia': eficiencia})
+
+
+def users_list(request):
+    users = User.objects.all()
+    return render(request, 'usuarios.html', {'users': users})

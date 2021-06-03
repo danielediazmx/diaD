@@ -14,15 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.contrib.auth.decorators import login_required
+from django.urls import path, include
 
-from Registro.views import RegistrosView
-from dashboard.views import index
+from Registro.views import RegistrosView, RegistroMarcarVotoView, registro_create_users
+from dashboard.views import index, users_list
 from excel_importer.views import ExcelImporter
 
 urlpatterns = [
-    path('', index),
-    path('excel-importer/', ExcelImporter.as_view()),
-    path('registros/', RegistrosView.as_view()),
+    path('', login_required(index)),
+    path('users-list/', users_list),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('excel-importer/', login_required(ExcelImporter.as_view())),
+    path('registros/', login_required(RegistrosView.as_view()), name='registros'),
+    path('registros/marcar-voto/<int:id>/<int:ya_voto>/', login_required(RegistroMarcarVotoView.as_view()), name='registros_marcar_voto'),
+    path('registros/create-users/', login_required(registro_create_users), name='registros_create_users'),
     path('admin/', admin.site.urls),
 ]

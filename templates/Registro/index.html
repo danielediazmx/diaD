@@ -37,8 +37,18 @@
                                 <td>{{ registro.nombre }} {{ registro.apellido_paterno }} {{ registro.apellido_materno }}</td>
                                 <td>{{ registro.celular }}</td>
                                 <td>{{ registro.coordinacion }}</td>
-                                <td>No</td>
-                                <td>...</td>
+                                <td>{{ registro.ya_voto|yesno:'Si,No' }}</td>
+                                <td>
+                                    {% if registro.ya_voto %}
+                                    <a href="/registros/marcar-voto/{{ registro.id }}/0/" class="btn btn-danger btn-sm">
+                                        Quitar Voto
+                                    </a>
+                                    {% else %}
+                                    <a href="/registros/marcar-voto/{{ registro.id }}/1/" class="btn btn-success btn-sm">
+                                        Marcar Voto
+                                    </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
