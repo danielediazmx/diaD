@@ -20,8 +20,8 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row card">
-                <div class="card-body">
-                    <table class="table table-bordered">
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap">
                         <thead>
                         <tr>
                             <th>Nombre Completo</th>
@@ -40,13 +40,15 @@
                                 <td>{{ registro.ya_voto|yesno:'Si,No' }}</td>
                                 <td>
                                     {% if registro.ya_voto %}
-                                    <a href="/registros/marcar-voto/{{ registro.id }}/0/" class="btn btn-danger btn-sm">
-                                        Quitar Voto
-                                    </a>
+                                        <a href="/registros/marcar-voto/{{ registro.id }}/0/"
+                                           class="btn btn-danger btn-sm">
+                                            Quitar Voto
+                                        </a>
                                     {% else %}
-                                    <a href="/registros/marcar-voto/{{ registro.id }}/1/" class="btn btn-success btn-sm">
-                                        Marcar Voto
-                                    </a>
+                                        <a href="/registros/marcar-voto/{{ registro.id }}/1/"
+                                           class="btn btn-success btn-sm">
+                                            Marcar Voto
+                                        </a>
                                     {% endif %}
                                 </td>
                             </tr>
