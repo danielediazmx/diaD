@@ -26,11 +26,13 @@
     </thead>
     <tbody>
     {% for user in users %}
-        <tr>
-            <td>{{ user.first_name }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.username }}.01</td>
-        </tr>
+        {% if not user.is_superuser %}
+            <tr>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.username }}.01</td>
+            </tr>
+        {% endif %}
     {% endfor %}
     </tbody>
 </table>
