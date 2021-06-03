@@ -2,7 +2,7 @@ import random
 
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
@@ -14,12 +14,19 @@ class RegistrosView(View):
     def get(self, request):
         user = request.user
 
-        registros_list = Registro.objects.filter(invitado_por=user.first_name).all()
+        registros_list = Registro.objects.filter(invitado_por=user.first_name)
+
         if user.is_superuser:
-            registros_list = Registro.objects.all()
+            registros_list = Registro.objects
+
+        nombre_filter = request.GET.get('nombre', '')
+        if nombre_filter:
+            registros_list = registros_list.filter(
+                Q(nombre__contains=nombre_filter.upper()) | Q(apellido_paterno=nombre_filter.upper()) | Q(
+                    apellido_paterno=nombre_filter.upper()))
 
         page = request.GET.get('page', 1)
-        paginator = Paginator(registros_list, 25)
+        paginator = Paginator(registros_list.all(), 25)
 
         try:
             registros = paginator.page(page)
@@ -30,11 +37,12 @@ class RegistrosView(View):
 
         index = registros.number - 1
         max_index = len(paginator.page_range)
-        start_index = index - 3 if index >= 3 else 0
-        end_index = index + 3 if index <= max_index - 3 else max_index
+        start_index = index - 10 if index >= 10 else 0
+        end_index = index + 10 if index <= max_index - 10 else max_index
         page_range = list(paginator.page_range)[start_index:end_index]
 
-        return render(request, 'Registro/index.html', {'registros': registros, 'page_range': page_range})
+        return render(request, 'Registro/index.html',
+                      {'registros': registros, 'page_range': page_range, 'nombre_filter': nombre_filter})
 
 
 class RegistroMarcarVotoView(View):

@@ -19,6 +19,16 @@
     <!-- /.content-header -->
     <section class="content">
         <div class="container-fluid">
+
+            <div class="col-12">
+                <form action="" method="get" id="form_coord">
+                    <label for="nombre">Nombre</label>
+                    <input name="nombre" id="nombre" class="form-control" value="{{ nombre_filter }}"/>
+                    <br>
+                    <button class="btn btn-success btn-sm" type="submit">Buscar</button>
+                    <hr>
+                </form>
+            </div>
             <div class="row card">
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
