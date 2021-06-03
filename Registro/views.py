@@ -15,6 +15,9 @@ class RegistrosView(View):
         user = request.user
 
         registros_list = Registro.objects.filter(invitado_por=user.first_name).all()
+        if user.is_superuser:
+            registros_list = Registro.objects.all()
+
         page = request.GET.get('page', 1)
         paginator = Paginator(registros_list, 25)
 
