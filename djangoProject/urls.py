@@ -18,11 +18,12 @@ from django.contrib.auth.decorators import login_required
 from django.urls import path, include
 
 from Registro.views import RegistrosView, RegistroMarcarVotoView, registro_create_users
-from dashboard.views import index, users_list
+from dashboard.views import index, users_list, dashboard_two
 from excel_importer.views import ExcelImporter
 
 urlpatterns = [
     path('', login_required(index)),
+    path('dashboard-two/', login_required(dashboard_two)),
     path('users-list/', users_list),
     path('accounts/', include('django.contrib.auth.urls')),
     path('excel-importer/', login_required(ExcelImporter.as_view())),
