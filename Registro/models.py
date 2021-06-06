@@ -14,6 +14,9 @@ class Registro(models.Model):
 
     ya_voto = models.BooleanField(default=False)
 
+    def red(self):
+        return "ISEA"
+
     def calcularMisInvitados(self):
         mis_invitados = Registro.objects.filter(
             invitado_por=self.nombre + " " + self.apellido_paterno + " " + self.apellido_materno)

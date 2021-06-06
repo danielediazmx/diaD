@@ -19,6 +19,26 @@ def index(request):
                    'no_han_votado': no_han_votado, 'eficiencia': eficiencia})
 
 
+def exportar(request):
+    import csv
+    from django.http import HttpResponse
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="users.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Nombre', 'Apellido Paterno', 'Apellido Materno', 'Teléfono', 'Red', 'Ya votó?'])
+
+    registros = Registro.objects.all()
+    for registro in registros:
+        registrox = (
+        [registro.nombre, registro.apellido_paterno, registro.apellido_materno, registro.celular, registro.red(),
+         "Si" if registro.ya_voto else "No"])
+        writer.writerow(registrox)
+
+    return response
+
+
 def dashboard_two(request):
     user: User = request.user
 

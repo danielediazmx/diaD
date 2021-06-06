@@ -93,6 +93,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="clearfix"></div>
+                <hr>
+                    {% if request.user.is_superuser %}
+                <div class="col-12">
+                        <a href="/exportar/" class="btn btn-warning btn-block" download>
+                            Descargar CSV Global
+                        </a>
+                </div>
+                    {% endif %}
                 <!-- ./col -->
             </div>
             <!-- /.row -->
